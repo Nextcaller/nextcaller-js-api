@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style type="text/css">
+        input[type='text'], select {
+            width: 250px;
+        }
+        .row {
+            margin-top: 10px; 
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            resize: none;
+        }
+    </style>
+    <script data-main="../nextcaller" src="../lib/require.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $("#send").on("click", function () {
+                var secret = $("#secret").val(),
+                    key = $("#key").val(),
+                    phone = $("#phone").val(),
+                    result = $("#result");
+                if (!(secret && key && phone)) {
+                    result.val("Please fill all fieds");
+                    return false;                  
+                }
+                var client = NextcallerClient(key, secret);
+                client.getPhone(phone, function(response_obj, status_code) {
+                    result.val(JSON.stringify(response_obj, null, 4));
+                }, function (error_obj, status_code) {
+                    result.val(JSON.stringify(error_obj, null, 4));
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form action="">
+            <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
+                    <label for="phone">Phone</label>
+                </div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input type="text" id="phone">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
+                    <label for="key">API key</label>
+                </div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input type="text" id="key">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
+                    <label for="secret">Api secret</label>
+                </div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input type="text" id="secret">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input class="btn btn-success" type="submit" id="send" value="Send">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6" style="text-align: center;">
+                <textarea id="result"></textarea>
+            </div>
+            <div class="col-xs-3"></div>
+        </div>
+    </div>
+</body>
+</html>

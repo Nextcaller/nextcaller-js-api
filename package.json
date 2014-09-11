@@ -1,0 +1,30 @@
+{
+    "name": "nextcaller-js-api",
+    "version": "0.0.1",
+    "description": "A JS wrapper around the Nextcaller API",
+    "main": "nextcaller.js",
+    "author": "Ihar Niamilentsau <trezorg@gmail.com>",
+    "scripts": {
+      "test": "node_modules/.bin/mocha-phantomjs -R spec test/test.html"
+    },
+    "keywords": [
+      "nextcaller",
+      "nodejs",
+      "api"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Nextcaller/nextcaller-js-api.git"
+    },  
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/Nextcaller/nextcaller-js-api/blob/master/LICENSE"
+      }
+    ],      
+    "devDependencies": {
+      "should": "*",
+      "mocha": "*",
+      "sinon": "*",
+      "mocha-phantomjs": "*"
+    }
+}
