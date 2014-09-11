@@ -291,12 +291,16 @@ describe("updateProfile with incorrect email", function () {
     it("should return 400 response", function (done) {
         var update_profile_request_object = {
             "email": "OOOPS"
-        }
+        }, update_profile_response = {
+            "users": {
+                "email": "Bad Request: Invalid email address"
+            }
+        };
         client.updateProfile(profile_id, update_profile_request_object, null, function (error, status_code) {
             status_code.should.equal(400);
-            error.should.equal("");
+            error.users.email.should.equal(update_profile_response.users.email);
             done();
         });
-        requests[0].respond(400, {}, "");
+        requests[0].respond(400, {}, JSON.stringify(update_profile_response));
     });
 });
