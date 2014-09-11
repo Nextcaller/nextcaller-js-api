@@ -288,7 +288,7 @@ describe("updateProfile with incorrect email", function () {
         xhr.restore();
     });
 
-    it("should return 404 response", function (done) {
+    it("should return 400 response", function (done) {
         var update_profile_request_object = {
             "email": "OOOPS"
         }
