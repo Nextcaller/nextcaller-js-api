@@ -1,3 +1,4 @@
+/* global define */
 /* jshint browser: true */
 /* jshint devel: true */
 

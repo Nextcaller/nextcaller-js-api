@@ -1,13 +1,13 @@
 /* global describe */
 /* global it */
+/* global NextcallerClient */
 /* jshint node:true */
 /* jshint unused:false */
 
 "use strict";
 
-var describe = window.describe,
-    it = window.it,
-    before = window.before,
+var before = window.before,
+    sinon = window.sinon,
     after = window.after,
     phone = 2125558383,
     wrong_phone = 212555838,
@@ -114,10 +114,7 @@ var describe = window.describe,
             "code": "555",
             "type": "Bad Request"
         }
-    };
-
-
-var client = NextcallerClient(api_key, api_secret);
+    }, client = new NextcallerClient(api_key, api_secret);
 
 describe("getPhone with correct phone number", function () {
 
