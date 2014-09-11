@@ -272,3 +272,31 @@ describe("updateProfile with incorrect profile id", function () {
         requests[0].respond(404, {}, "");
     });
 });
+
+
+describe("updateProfile with incorrect email", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return 404 response", function (done) {
+        var update_profile_request_object = {
+            "email": "OOOPS"
+        }
+        client.updateProfile(profile_id, update_profile_request_object, null, function (error, status_code) {
+            status_code.should.equal(400);
+            error.should.equal("");
+            done();
+        });
+        requests[0].respond(400, {}, "");
+    });
+});
