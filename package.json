@@ -24,7 +24,6 @@
     "devDependencies": {
       "should": "*",
       "mocha": "*",
-      "sinon": "*",
       "mocha-phantomjs": "*"
     }
 }
