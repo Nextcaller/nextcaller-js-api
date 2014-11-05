@@ -16,30 +16,6 @@
             resize: none;
         }
     </style>
-    <script data-main="../nextcaller" src="../lib/require.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript">
-
-        $(function () {
-            $("#send").on("click", function () {
-                var secret = $("#secret").val(),
-                    key = $("#key").val(),
-                    phone = $("#phone").val(),
-                    result = $("#result");
-                if (!(secret && key && phone)) {
-                    result.val("Please fill all fieds");
-                    return false;                  
-                }
-                var client = NextcallerClient(key, secret);
-                client.getPhone(phone, function(response_obj, status_code) {
-                    result.val(JSON.stringify(response_obj, null, 4));
-                }, function (error_obj, status_code) {
-                    result.val(JSON.stringify(error_obj, null, 4));
-                });
-                return false;
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="container">
@@ -69,6 +45,17 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
+                    <label for="secret">Sandbox</label>
+                </div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <select id="sandbox">
+                        <option value="1" selected="true">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-4"></div>
                 <div class="col-xs-8" style="text-align: left;">
                     <input class="btn btn-success" type="submit" id="send" value="Send">
@@ -83,5 +70,30 @@
             <div class="col-xs-3"></div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script data-main="../nextcaller" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#send").on("click", function () {
+                var secret = $("#secret").val(),
+                    key = $("#key").val(),
+                    phone = $("#phone").val(),
+                    result = $("#result"),
+                    sandbox = !!parseInt($("#sandbox").val());
+                if (!(secret && key && phone)) {
+                    result.val("Please fill all fieds");
+                    return false;
+                }
+                var client = NextCallerClient(key, secret);
+                client.changeSandboxMode(sandbox);
+                client.getPhone(phone, function(response_obj, status_code) {
+                    result.val(JSON.stringify(response_obj, null, 4));
+                }, function (error_obj, status_code) {
+                    result.val(JSON.stringify(error_obj, null, 4));
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

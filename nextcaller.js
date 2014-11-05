@@ -6,29 +6,38 @@
 
 (function (window) {
 
-    var base_url = "https://api.nextcaller.com/v2/";
+    var base_url = "https://api.nextcaller.com/v2/",
+        sandbox_base_url = "https://api.sandbox.nextcaller.com/v2/";
 
-    function Client(api_key, api_secret) {
-        if (!(this instanceof Client)) {
-            return new Client(api_key, api_secret);
+    function NextCallerClient(api_key, api_secret, sandbox) {
+        if (!(this instanceof NextCallerClient)) {
+            return new NextCallerClient(api_key, api_secret, sandbox);
         }
         this.api_key = api_key;
         this.api_secret = api_secret;
+        this.sandbox = !!sandbox;
+        this.getBaseUrl = function () {
+            return this.sandbox ?  sandbox_base_url : base_url;
+        };
     }
 
-    Client.prototype.getPhone = function(phone, success_callback, error_callback) {
-        var url = base_url + "records/?format=json&phone=" + phone;
+    NextCallerClient.prototype.changeSandboxMode = function(sandbox) {
+        this.sandbox = !!sandbox;
+    };
+
+    NextCallerClient.prototype.getPhone = function(phone, success_callback, error_callback) {
+        var url = this.getBaseUrl() + "records/?format=json&phone=" + phone;
         makeCorsRequest("GET", url, this.api_key, this.api_secret, success_callback, error_callback);
     };
 
-    Client.prototype.getProfile = function(profile_id, success_callback, error_callback) {
-        var url = base_url + "users/" + profile_id + "/?format=json";
+    NextCallerClient.prototype.getProfile = function(profile_id, success_callback, error_callback) {
+        var url = this.getBaseUrl() + "users/" + profile_id + "/?format=json";
         makeCorsRequest("GET", url, this.api_key, this.api_secret, success_callback, error_callback);
     };
 
-    Client.prototype.updateProfile = function(profile_id, data, success_callback, error_callback) {
+    NextCallerClient.prototype.updateProfile = function(profile_id, data, success_callback, error_callback) {
         var json_data = JSON.stringify(data),
-            url = base_url + "users/" + profile_id + "/?format=json";
+            url = this.getBaseUrl() + "users/" + profile_id + "/?format=json";
         makeCorsRequest("POST", url, this.api_key, this.api_secret, success_callback, error_callback, json_data);
     };
 
@@ -106,11 +115,11 @@
         }
     }
 
-    window.NextcallerClient = Client;
+    window.NextCallerClient = NextCallerClient;
 
     if (typeof(define) === "function") {
         define(function (require, exports) {
-            exports.NextcallerClient = Client;
+            exports.NextCallerClient = NextCallerClient;
         });
     }
 

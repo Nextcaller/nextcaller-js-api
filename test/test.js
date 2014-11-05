@@ -114,7 +114,7 @@ var before = window.before,
             "code": "555",
             "type": "Bad Request"
         }
-    }, client = new NextcallerClient(api_key, api_secret);
+    }, client = new NextCallerClient(api_key, api_secret);
 
 describe("getPhone with correct phone number", function () {
 
