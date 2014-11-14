@@ -31,11 +31,12 @@ or
 Example
 -------
 
-    var api_key = "XXXXX",
-        api_secret = "XXXXX",
+    var username = "XXXXX",
+        password = "XXXXX",
         sandbox = false,
+        version = "v2",
         phone_number = "121212...",
-        client = module.NextCallerClient(api_key, api_secret, sandbox);
+        client = module.NextCallerClient(api_key, api_secret, sandbox, version);
     client.getPhone(phone_number, function (data, status_code) {
         console.log(data);
         console.log(status_code);
@@ -48,16 +49,18 @@ Example
 Client
 -------------
 
-    var api_key = "XXXXX",
-        api_secret = "XXXXX",
+    var username = "XXXXX",
+        password = "XXXXX",
         sandbox = false,
-        client = NextCallerClient(api_key, api_secret, sandbox);
+        version = "v2"
+        client = NextCallerClient(api_key, api_secret, sandbox, version);
 
     Parameters:
 
-    api_key - api key
-    api_secret - api secret
-    sandbox - sandbox mode
+    username - username
+    password - password
+    sandbox - boolean, sandbox mode
+    version - api version, default "v2"
 
 
 API Items
@@ -65,7 +68,7 @@ API Items
 
 ### Get profile by phone ###
 
-    client.getPhone(number, success_callback, error_callback)
+    client.getByPhone(number, success_callback, error_callback)
     
     Parameters:
     
@@ -83,7 +86,7 @@ API Items
 
 ### Get profile by id ###
 
-    client.getProfile(profile_id, success_callback, error_callback)
+    client.getByProfileId(profile_id, success_callback, error_callback)
     
     Parameters:
     
@@ -101,7 +104,7 @@ API Items
 
 ### Update profile ###
 
-    client.updateProfile(profile_id, data, success_callback, error_callback)
+    client.updateByProfileId(profile_id, data, success_callback, error_callback)
     
     Parameters:
     
@@ -131,4 +134,4 @@ API Items
         console.log("Error: ", error);
         console.log("Status code: ",status_code);
     }
-    client.updateProfile(profile_id, data, success_callback, error_callback);
+    client.updateByProfileId(profile_id, data, success_callback, error_callback);
