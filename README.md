@@ -36,7 +36,7 @@ Example
         sandbox = false,
         version = "v2",
         phone_number = "121212...",
-        client = module.NextCallerClient(api_key, api_secret, sandbox, version);
+        client = NextCallerClient(api_key, api_secret, sandbox, version);
     client.getPhone(phone_number, function (data, status_code) {
         console.log(data);
         console.log(status_code);
