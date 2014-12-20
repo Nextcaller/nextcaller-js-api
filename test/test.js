@@ -184,6 +184,10 @@ var before = window.before,
                 ]
             }
         }
+    },
+    fraud_get_level_result = {
+        "spoofed": "false",
+        "fraud_risk": "low"
     };
 
 
@@ -291,6 +295,32 @@ describe("getProfile with incorrect profile id", function () {
     });
 });
 
+
+describe("getFraudLevel with correct phone", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var fraud_response_object_str = JSON.stringify(fraud_get_level_result);
+        client.getFraudLevel(phone, function (data, status_code) {
+            status_code.should.equal(200);
+            data.spoofed.should.equal("false");
+            data.fraud_risk.should.equal("low");
+            done();
+        });
+        requests[0].respond(200, {}, fraud_response_object_str);
+    });
+});
 
 describe("updateProfile with correct profile id", function () {
 
@@ -479,4 +509,30 @@ describe("platformClient update platform user with correct data", function () {
         requests[0].respond(204, {}, "");
     });
 
+});
+
+describe("platformClient getFraudLevel with correct phone", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var fraud_response_object_str = JSON.stringify(fraud_get_level_result);
+        platform_client.getFraudLevel(phone, function (data, status_code) {
+            status_code.should.equal(200);
+            data.spoofed.should.equal("false");
+            data.fraud_risk.should.equal("low");
+            done();
+        });
+        requests[0].respond(200, {}, fraud_response_object_str);
+    });
 });

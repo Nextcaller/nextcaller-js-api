@@ -16,7 +16,8 @@
         }
         this.username = username;
         this.password = password;
-        this.base_url = (!!sandbox ?  sandbox_base_url : base_url) + (version || default_api_version) + "/";
+        this.base_url = (!!sandbox ?  sandbox_base_url : base_url) + 
+            (version || default_api_version) + "/";
     }
 
     NextCallerClient.prototype.getByPhone = function(phone, success_callback, error_callback) {
@@ -74,6 +75,11 @@
             url = this.base_url + "platform_users/" + platform_username + "/?format=json";
         makeCorsRequest("POST", url, this.username, this.password, success_callback, error_callback, json_data);
     }
+
+    NextCallerClient.prototype.getFraudLevel = NextCallerPlatformClient.prototype.getFraudLevel = function(phone, success_callback, error_callback) {
+        var url = this.base_url + "fraud/?format=json&phone=" + phone;
+        makeCorsRequest("GET", url, this.username, this.password, success_callback, error_callback);
+    };
 
     var error_handler = function (err, status_code, error_callback) {
         var json_message = err.message || err;
