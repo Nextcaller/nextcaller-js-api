@@ -38,7 +38,7 @@
 
     function NextCallerPlatformClient(username, password, sandbox, version) {
         if (!(this instanceof NextCallerPlatformClient)) {
-            return new NextCallerClient(username, password, sandbox, version);
+            return new NextCallerPlatformClient(username, password, sandbox, version);
         }
         this.username = username;
         this.password = password;
