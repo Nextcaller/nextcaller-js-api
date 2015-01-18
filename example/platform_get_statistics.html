@@ -87,10 +87,10 @@
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var platform_username = null;
+                var page = 1;
                 var client = NextCallerPlatformClient(key, secret, sandbox, version);
                 console.log(client);
-                client.getPlatformStatistics(platform_username, function(response_obj, status_code) {
+                client.getPlatformStatistics(page, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));

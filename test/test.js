@@ -138,7 +138,7 @@ var before = window.before,
                 "resource_uri": "/v2/platform_users/test/"
             }
         ],
-       "page": 1,
+        "page": 1,
         "has_next": false,
         "total_pages": 1,
         "total_platform_calls": {
@@ -403,7 +403,7 @@ describe("updateProfile with incorrect email", function () {
     });
 });
 
-describe("platformClient getPhone with correct phone number", function () {
+describe("platformClient get platform statistics", function () {
 
     var xhr,
         requests,
@@ -420,10 +420,11 @@ describe("platformClient getPhone with correct phone number", function () {
     });
 
     it("should return the correct response", function (done) {
-        platform_client.getPlatformStatistics(null, function (data, status_code) {
+        platform_client.getPlatformStatistics(1, function (data, status_code) {
             status_code.should.equal(200);
             data.object_list[0].username.should.equal(platform_username);
             data.object_list[0].number_of_operations.should.equal(3);
+            data.page.should.equal(1);
             done();
         });
         requests[0].respond(200, {}, platform_statistics_response_object_str);
@@ -447,7 +448,7 @@ describe("platformClient get platform statistics by user", function () {
     });
 
     it("should return the correct response", function (done) {
-        platform_client.getPlatformStatistics(platform_username, function (data, status_code) {
+        platform_client.getPlatformUser(platform_username, function (data, status_code) {
             status_code.should.equal(200);
             data.username.should.equal(platform_username);
             data.number_of_operations.should.equal(3);

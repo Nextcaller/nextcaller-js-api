@@ -65,8 +65,16 @@
         makeCorsRequest("POST", url, this.username, this.password, success_callback, error_callback, json_data);
     };
 
-    NextCallerPlatformClient.prototype.getPlatformStatistics = function(platform_username, success_callback, error_callback) {
-        var url = this.base_url + "platform_users/" + (platform_username ? platform_username + "/" : "") + "?format=json";
+    NextCallerPlatformClient.prototype.getPlatformStatistics = function(page, success_callback, error_callback) {
+        if (!page) {
+            page = 1;
+        }
+        var url = this.base_url + "platform_users/?format=json&page=" + page;
+        makeCorsRequest("GET", url, this.username, this.password, success_callback, error_callback);
+    }
+
+    NextCallerPlatformClient.prototype.getPlatformUser = function(platform_username, success_callback, error_callback) {
+        var url = this.base_url + "platform_users/" + platform_username + "/?format=json";
         makeCorsRequest("GET", url, this.username, this.password, success_callback, error_callback);
     }
 

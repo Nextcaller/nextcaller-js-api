@@ -22,10 +22,18 @@
         <form action="">
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="username">Platform username</label>
+                    <label for="profile_id">Profile ID</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
-                    <input type="text" id="username">
+                    <input type="text" id="profile_id">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
+                    <label for="platform_username">Platform Username</label>
+                </div>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input type="text" id="profile_id">
                 </div>
             </div>
             <div class="row">
@@ -88,16 +96,20 @@
             $("#send").on("click", function () {
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
-                    platform_username = $("#username").val(),
+                    profile_id = $("#profile_id").val(),
+                    profile_username = $("#profile_username").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val()),
                     version = $("#version").val();
-                if (!(secret && key && platform_username)) {
+                if (!(secret && key && phone && profile_username)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
+                var data = {
+                    "email": "test@test.com"
+                }
                 var client = NextCallerPlatformClient(key, secret, sandbox, version);
-                client.getPlatformUser(platform_username, function(response_obj, status_code) {
+                client.updateByProfileId(profile_id, data, profile_username, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));
