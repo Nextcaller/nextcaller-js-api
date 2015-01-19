@@ -206,14 +206,14 @@ describe("getPhone with correct phone number", function () {
     });
 
     it("should return the correct response", function (done) {
-        var phoneResponseObject_str = JSON.stringify(phoneResponseObject);
+        var phoneresponseobjectStr = JSON.stringify(phoneResponseObject);
         client.getByPhone(phone, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
             data.records[0].id.should.equal(profile_id);
             done();
         });
-        requests[0].respond(200, {}, phoneResponseObject_str);
+        requests[0].respond(200, {}, phoneresponseobjectStr);
     });
 });
 
