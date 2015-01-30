@@ -188,10 +188,34 @@ var before = window.before,
     fraudGetLevelResult = {
         "spoofed": "false",
         "fraud_risk": "low"
+    },
+    wrongAddressResponseObj = {
+        "error": {
+            "message": "Validation Error",
+            "code": "422",
+            "type": "Unprocessable Entity",
+            "description": {
+                "address": [
+                    "zip_code or combination of city and state parameters must be provided."
+                ]
+            }
+        }
+    },
+    wrongAddressRequestObj = {
+        "first_name": "Sharon",
+        "last_name": "Ehni",
+        "address": "7160 Sw Crestview Pl"
+    },
+    correctAddressRequestObj = {
+        "first_name": "Sharon",
+        "last_name": "Ehni",
+        "address": "7160 Sw Crestview Pl",
+        "zip_code": 97008
     };
 
 
-describe("getPhone with correct phone number", function () {
+
+describe("getByPhone with correct phone number", function () {
 
     var xhr, requests;
 
@@ -218,7 +242,7 @@ describe("getPhone with correct phone number", function () {
 });
 
 
-describe("getPhone with incorrect phone number", function () {
+describe("getByPhone with incorrect phone number", function () {
     
     var xhr, requests;
 
@@ -244,7 +268,60 @@ describe("getPhone with incorrect phone number", function () {
 });
 
 
-describe("getProfile with correct profile id", function () {
+describe("getByAddressName with correct address data", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var addressResponseObjectStr = JSON.stringify(phoneResponseObject);
+        client.getByAddressName(correctAddressRequestObj, function (data, statusCode) {
+            statusCode.should.equal(200);
+            data.records[0].phone[0].number.should.equal(phone.toString());
+            data.records[0].id.should.equal(profile_id);
+            done();
+        });
+        requests[0].respond(200, {}, addressResponseObjectStr);
+    });
+});
+
+
+describe("getByAddressName with incorrect address data", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return 400 error", function (done) {
+        var addressResponseObjectStr = JSON.stringify(wrongAddressResponseObj);
+        client.getByAddressName(wrongAddressRequestObj, null, function (data, statusCode) {
+            statusCode.should.equal(400);
+            data.error.code.should.equal("422");
+            done();
+        });
+        requests[0].respond(400, {}, addressResponseObjectStr);
+    });
+});
+
+
+describe("getByProfileId with correct profile id", function () {
 
     var xhr, requests;
 
@@ -271,7 +348,7 @@ describe("getProfile with correct profile id", function () {
 });
 
 
-describe("getProfile with incorrect profile id", function () {
+describe("getByProfileId with incorrect profile id", function () {
 
     var xhr, requests;
 
@@ -535,5 +612,57 @@ describe("platformClient getFraudLevel with correct phone", function () {
             done();
         });
         requests[0].respond(200, {}, fraudResponseObjectStr);
+    });
+});
+
+describe("platformClient getByAddressName with correct address data", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var addressResponseObjectStr = JSON.stringify(phoneResponseObject);
+        platformClient.getByAddressName(correctAddressRequestObj, platformUsername, function (data, statusCode) {
+            statusCode.should.equal(200);
+            data.records[0].phone[0].number.should.equal(phone.toString());
+            data.records[0].id.should.equal(profile_id);
+            done();
+        });
+        requests[0].respond(200, {}, addressResponseObjectStr);
+    });
+});
+
+
+describe("platformClient getByAddressName with incorrect address data", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return 400 error", function (done) {
+        var addressResponseObjectStr = JSON.stringify(wrongAddressResponseObj);
+        platformClient.getByAddressName(wrongAddressRequestObj, platformUsername, null, function (data, statusCode) {
+            statusCode.should.equal(400);
+            data.error.code.should.equal("422");
+            done();
+        });
+        requests[0].respond(400, {}, addressResponseObjectStr);
     });
 });
