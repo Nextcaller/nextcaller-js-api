@@ -131,7 +131,7 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerPlatformClient.prototype.updatePlatformAccount = function(accountId, data, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.updatePlatformAccount = function(data, accountId, successCallback, errorCallback) {
         validateAccountId(accountId);
         var jsonData = JSON.stringify(data),
             url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
