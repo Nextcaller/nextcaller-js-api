@@ -149,7 +149,7 @@ var before = window.before,
             "2014-11": 3
         }
     },
-    platformStatisticsByUserResponseObject = {
+    platformStatisticsByAccountResponseObject = {
         "id": "test",
         "first_name": "",
         "last_name": "",
@@ -157,10 +157,10 @@ var before = window.before,
         "email": "",
         "number_of_operations": 3,
         "billed_operations": {
-            "201411": 3
+            "2014-11": 3
         },
         "total_operations": {
-            "201411": 3
+            "2014-11": 3
         },
         "object": "account",
         "resource_uri": "/v2/accounts/test/"
@@ -511,10 +511,10 @@ describe("platformClient get platform statistics", function () {
 });
 
 
-describe("platformClient get platform statistics by user", function () {
+describe("platformClient get platform statistics by account", function () {
     var xhr,
         requests,
-        platformStatisticsByUserResponseObjectStr = JSON.stringify(platformStatisticsByUserResponseObject);
+        platformStatisticsByAccountResponseObjectStr = JSON.stringify(platformStatisticsByAccountResponseObject);
 
     before(function () {
         xhr = sinon.useFakeXMLHttpRequest();
@@ -533,13 +533,13 @@ describe("platformClient get platform statistics by user", function () {
             data.number_of_operations.should.equal(3);
             done();
         });
-        requests[0].respond(200, {}, platformStatisticsByUserResponseObjectStr);
+        requests[0].respond(200, {}, platformStatisticsByAccountResponseObjectStr);
     });
 
 });
 
 
-describe("platformClient update platform user with incorrect data", function () {
+describe("platformClient update platform account with incorrect data", function () {
 
     var xhr,
         requests,
@@ -566,7 +566,7 @@ describe("platformClient update platform user with incorrect data", function () 
 
 });
 
-describe("platformClient update platform user with correct data", function () {
+describe("platformClient update platform account with correct data", function () {
 
     var xhr, requests;
 
