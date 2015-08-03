@@ -65,10 +65,10 @@
     };
 
     function validateAccountId(accountId) {
-        if (!/^[a-z0-9_]+$/.test(accountId)) {
+        if (!(/^.+@.+\..{2,}$/.test(accountId) || /^\w+$/.test(accountId))) {
             throw Error(
                 "Invalid account ID: " + accountId + ". " +
-                "Letters, numbers and underscores at lower case are allowed for account ID."
+                "Letters, numbers and underscores at lower case or valid email addresses are allowed for account ID."
             );
         }
     }
