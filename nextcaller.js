@@ -45,6 +45,14 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
+    NextCallerClient.prototype.getByEmail = function(email, successCallback, errorCallback) {
+        var params = {
+            "email": email,
+            "format": "json"
+        }, url = this.baseUrl + "records/" + serialize(params);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+    };
+
     NextCallerClient.prototype.getByProfileId = function(profile_id, successCallback, errorCallback) {
         var url = this.baseUrl + "users/" + profile_id + "/" + serialize({"format": "json"});
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
@@ -96,6 +104,14 @@
         validateAccountId(accountId);
         addressData.format = "json";
         var url = this.baseUrl + "records/" + serialize(addressData);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
+    };
+
+    NextCallerPlatformClient.prototype.getByEmail = function(email, accountId, successCallback, errorCallback) {
+        var params = {
+            "email": email,
+            "format": "json"
+        },url = this.baseUrl + "records/" + serialize(params);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
