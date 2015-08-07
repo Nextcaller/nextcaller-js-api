@@ -72,15 +72,6 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    function validateAccountId(accountId) {
-        if (!(/^.+@.+\..{2,}$/.test(accountId) || /^\w+$/.test(accountId))) {
-            throw Error(
-                "Invalid account ID: " + accountId + ". " +
-                "Letters, numbers and underscores at lower case or valid email addresses are allowed for account ID."
-            );
-        }
-    }
-
     function NextCallerPlatformClient(username, password, sandbox, version) {
         if (!(this instanceof NextCallerPlatformClient)) {
             return new NextCallerPlatformClient(username, password, sandbox, version);
@@ -92,7 +83,6 @@
     }
 
     NextCallerPlatformClient.prototype.getByPhone = function(phone, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var params = {
             "format": "json",
             "phone": phone
@@ -101,7 +91,6 @@
     };
 
     NextCallerPlatformClient.prototype.getByAddressName = function(addressData, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         addressData.format = "json";
         var url = this.baseUrl + "records/" + serialize(addressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
@@ -116,7 +105,6 @@
     };
 
     NextCallerPlatformClient.prototype.getByProfileId = function(profile_id, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var params = {
             "format": "json"
         }, url = this.baseUrl + "users/" + profile_id + "/" + serialize(params);
@@ -124,7 +112,6 @@
     };
 
     NextCallerPlatformClient.prototype.updateByProfileId = function(profile_id, data, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var jsonData = JSON.stringify(data),
             params = {
                 "format": "json"
@@ -142,20 +129,17 @@
     };
 
     NextCallerPlatformClient.prototype.getPlatformAccount = function(accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
     NextCallerPlatformClient.prototype.updatePlatformAccount = function(data, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var jsonData = JSON.stringify(data),
             url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
     NextCallerPlatformClient.prototype.getFraudLevel = function(phone, accountId, successCallback, errorCallback) {
-        validateAccountId(accountId);
         var params = {
             "format": "json",
             "phone": phone
