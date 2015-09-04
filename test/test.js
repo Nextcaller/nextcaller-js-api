@@ -15,9 +15,8 @@ var before = window.before,
     wrongProfileId = profile_id + "XXXXXXXXXXX",
     username = "XXXXXXXXXXXXX",
     password = "YYYYYYYYYYYYYYY",
-    defaultApiVersion = "v2",
-    client = new window.NextCallerClient(username, password, true, defaultApiVersion),
-    platformClient = new window.NextCallerPlatformClient(username, password, true, defaultApiVersion),
+    client = new window.NextCallerClient(username, password, true),
+    platformClient = new window.NextCallerPlatformClient(username, password, true),
     accountId = "test",
     phoneResponseObject = {
         "records": [

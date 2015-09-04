@@ -64,17 +64,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4" style="text-align: right;">
-                    <label for="version">API version</label>
-                </div>
-                <div class="col-xs-8" style="text-align: left;">
-                    <select id="version">
-                        <option value="v2" selected="true">v2</option>
-                        <option value="v3">v3</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4"></div>
                 <div class="col-xs-8" style="text-align: left;">
                     <input class="btn btn-success" type="submit" id="send" value="Send">
@@ -99,13 +88,12 @@
                     nameAddress = $("#name_address").val(),
                     accountId = $("#account_id").val(),
                     result = $("#result"),
-                    sandbox = !!parseInt($("#sandbox").val()),
-                    version = $("#version").val();
+                    sandbox = !!parseInt($("#sandbox").val());
                 if (!(secret && key && nameAddress)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var client = NextCallerPlatformClient(key, secret, sandbox, version),
+                var client = NextCallerPlatformClient(key, secret, sandbox),
                     nameAddressData = JSON.parse(nameAddress);
                 client.getByNameAddress(nameAddressData, accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));

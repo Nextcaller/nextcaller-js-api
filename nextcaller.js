@@ -8,7 +8,7 @@
 
     var baseUrl = "https://api.nextcaller.com/",
         sandboxBaseUrl = "https://api.sandbox.nextcaller.com/",
-        defaultApiVersion = "v2",
+        defaultApiVersion = "v2.1",
         defaultPlatformAccountHeader = "Nc-Account-Id";
 
     function serialize(obj) {
@@ -21,14 +21,13 @@
         return "?" + vals.join("&");
     }
 
-    function NextCallerClient(username, password, sandbox, version) {
+    function NextCallerClient(username, password, sandbox) {
         if (!(this instanceof NextCallerClient)) {
-            return new NextCallerClient(username, password, sandbox, version);
+            return new NextCallerClient(username, password, sandbox);
         }
         this.username = username;
         this.password = password;
-        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + 
-            (version || defaultApiVersion) + "/";
+        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + defaultApiVersion + "/";
     }
 
     NextCallerClient.prototype.getByPhone = function(phone, successCallback, errorCallback) {
@@ -72,14 +71,13 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    function NextCallerPlatformClient(username, password, sandbox, version) {
+    function NextCallerPlatformClient(username, password, sandbox) {
         if (!(this instanceof NextCallerPlatformClient)) {
-            return new NextCallerPlatformClient(username, password, sandbox, version);
+            return new NextCallerPlatformClient(username, password, sandbox);
         }
         this.username = username;
         this.password = password;
-        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + 
-            (version || defaultApiVersion) + "/";
+        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + defaultApiVersion + "/";
     }
 
     NextCallerPlatformClient.prototype.getByPhone = function(phone, accountId, successCallback, errorCallback) {
