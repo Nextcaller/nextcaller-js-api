@@ -13,6 +13,8 @@ var before = window.before,
     wrongPhone = 212555838,
     profile_id = "97d949a413f4ea8b85e9586e1f2d9a",
     wrongProfileId = profile_id + "XXXXXXXXXXX",
+    email = "demo@nextcaller.com",
+    wrongEmail = "demo@nextcaller@com",
     username = "XXXXXXXXXXXXX",
     password = "YYYYYYYYYYYYYYY",
     client = new window.NextCallerClient(username, password, true),
@@ -117,8 +119,13 @@ var before = window.before,
             "code": "555",
             "type": "Bad Request"
         }
-    }, 
-    platformStatisticsResponseObject = {
+    }, wrongEmailError = {
+        "error": {
+            "message": "The email address you have entered is invalid.",
+            "code": "560",
+            "type": "Bad Request"
+        }
+    }, platformStatisticsResponseObject = {
         "object_list": [
             {
                 "id": "test",
@@ -393,6 +400,59 @@ describe("getByProfileId with incorrect profile id", function () {
             done();
         });
         requests[0].respond(404, {}, "");
+    });
+});
+
+
+describe("getByEmail with correct email", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var emailResponseObjectStr = JSON.stringify(phoneResponseObject);
+        client.getByEmail(email, function (data, statusCode) {
+            statusCode.should.equal(200);
+            data.records[0].email.should.equal(email);
+            data.records[0].id.should.equal(profile_id);
+            done();
+        });
+        requests[0].respond(200, {}, emailResponseObjectStr);
+    });
+});
+
+
+describe("getByEmail with incorrect email", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return 400 error", function (done) {
+        var emailErrorObjectStr = JSON.stringify(wrongEmailError);
+        client.getByEmail(wrongEmail, null, function (data, statusCode) {
+            statusCode.should.equal(400);
+            data.error.code.should.equal("560");
+            done();
+        });
+        requests[0].respond(400, {}, emailErrorObjectStr);
     });
 });
 
@@ -739,5 +799,58 @@ describe("platformClient getByNameAddress with incorrect name and address data",
             done();
         });
         requests[0].respond(400, {}, nameAddressResponseObjectStr);
+    });
+});
+
+
+describe("platformClient getByEmail with correct email", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the correct response", function (done) {
+        var emailResponseObjectStr = JSON.stringify(phoneResponseObject);
+        platformClient.getByEmail(email, accountId, function (data, statusCode) {
+            statusCode.should.equal(200);
+            data.records[0].email.should.equal(email);
+            data.records[0].id.should.equal(profile_id);
+            done();
+        });
+        requests[0].respond(200, {}, emailResponseObjectStr);
+    });
+});
+
+
+describe("platformClient getByEmail with incorrect email", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return 400 error", function (done) {
+        var emailErrorObjectStr = JSON.stringify(wrongEmailError);
+        platformClient.getByEmail(wrongEmail, accountId, null, function (data, statusCode) {
+            statusCode.should.equal(400);
+            data.error.code.should.equal("560");
+            done();
+        });
+        requests[0].respond(400, {}, emailErrorObjectStr);
     });
 });
