@@ -22,10 +22,10 @@
         <form action="">
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="username">Platform username</label>
+                    <label for="name_address">Name and address</label>
                 </div>
-                <div class="col-xs-8" style="text-align: left;">
-                    <input type="text" id="username">
+                <div class="col-xs-5" style="text-align: left;">
+                    <textarea id="name_address"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="secret">Sandbox</label>
+                    <label for="sandbox">Sandbox</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
                     <select id="sandbox">
@@ -57,7 +57,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="secret">API version</label>
+                    <label for="version">API version</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
                     <select id="version">
@@ -88,16 +88,17 @@
             $("#send").on("click", function () {
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
-                    platform_username = $("#username").val(),
+                    nameAddress = $("#name_address").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val()),
                     version = $("#version").val();
-                if (!(secret && key && platform_username)) {
+                if (!(secret && key && nameAddress)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var client = NextCallerPlatformClient(key, secret, sandbox, version);
-                client.getPlatformUser(platform_username, function(response_obj, status_code) {
+                var client = NextCallerClient(key, secret, sandbox, version),
+                    nameAddressData = JSON.parse(nameAddress);
+                client.getByNameAddress(nameAddressData, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));

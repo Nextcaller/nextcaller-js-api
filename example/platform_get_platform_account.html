@@ -22,10 +22,10 @@
         <form action="">
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="phone">Address</label>
+                    <label for="account_id">Account ID</label>
                 </div>
-                <div class="col-xs-5" style="text-align: left;">
-                    <textarea id="address"></textarea>
+                <div class="col-xs-8" style="text-align: left;">
+                    <input type="text" id="account_id">
                 </div>
             </div>
             <div class="row">
@@ -88,17 +88,16 @@
             $("#send").on("click", function () {
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
-                    address = $("#address").val(),
+                    accountId = $("#account_id").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val()),
                     version = $("#version").val();
-                if (!(secret && key && address)) {
+                if (!(secret && key && accountId)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var client = NextCallerClient(key, secret, sandbox, version),
-                    addressData = JSON.parse(address)
-                client.getByAddressName(addressData, function(response_obj, status_code) {
+                var client = NextCallerPlatformClient(key, secret, sandbox, version);
+                client.getPlatformAccount(accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));

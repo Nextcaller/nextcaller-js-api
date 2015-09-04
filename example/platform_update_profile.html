@@ -30,10 +30,10 @@
             </div>
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="platform_username">Platform Username</label>
+                    <label for="account_id">Account ID</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
-                    <input type="text" id="profile_id">
+                    <input type="text" id="account_id">
                 </div>
             </div>
             <div class="row">
@@ -97,11 +97,11 @@
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
                     profile_id = $("#profile_id").val(),
-                    profile_username = $("#profile_username").val(),
+                    accountId = $("#account_id").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val()),
                     version = $("#version").val();
-                if (!(secret && key && phone && profile_username)) {
+                if (!(secret && key && phone && accountId)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
@@ -109,7 +109,7 @@
                     "email": "test@test.com"
                 }
                 var client = NextCallerPlatformClient(key, secret, sandbox, version);
-                client.updateByProfileId(profile_id, data, profile_username, function(response_obj, status_code) {
+                client.updateByProfileId(profile_id, data, accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));
