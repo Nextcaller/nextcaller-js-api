@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style type="text/css">
+        input[type='text'], select {
+            width: 250px;
+        }
+        .row {
+            margin-top: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form action="">
+        <div class="row">
+            <div class="col-xs-4" style="text-align: right;">
+                <label for="account_data">Account data</label>
+            </div>
+            <div class="col-xs-5" style="text-align: left;">
+                <textarea id="account_data"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="text-align: right;">
+                <label for="key">API key</label>
+            </div>
+            <div class="col-xs-8" style="text-align: left;">
+                <input type="text" id="key">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="text-align: right;">
+                <label for="secret">Api secret</label>
+            </div>
+            <div class="col-xs-8" style="text-align: left;">
+                <input type="text" id="secret">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="text-align: right;">
+                <label for="sandbox">Sandbox</label>
+            </div>
+            <div class="col-xs-8" style="text-align: left;">
+                <select id="sandbox">
+                    <option value="1" selected="true">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-8" style="text-align: left;">
+                <input class="btn btn-success" type="submit" id="send" value="Send">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6" style="text-align: center;">
+            <textarea id="result"></textarea>
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script data-main="../nextcaller" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#send").on("click", function () {
+            var secret = $("#secret").val(),
+                key = $("#key").val(),
+                accountData = $("#account_data").val(),
+                result = $("#result"),
+                sandbox = !!parseInt($("#sandbox").val());
+            if (!(secret && key && accountData)) {
+                result.val("Please fill all fieds");
+                return false;
+            }
+            var client = NextCallerPlatformClient(key, secret, sandbox),
+                parsedAccountData = JSON.parse(accountData);
+            client.updatePlatformAccount(parsedAccountData, function(response_obj, status_code) {
+                result.val(JSON.stringify(response_obj, null, 4));
+            }, function (error_obj, status_code) {
+                result.val(JSON.stringify(error_obj, null, 4));
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

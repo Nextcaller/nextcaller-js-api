@@ -22,6 +22,14 @@
         <form action="">
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
+                    <label for="account_data">Account data</label>
+                </div>
+                <div class="col-xs-5" style="text-align: left;">
+                    <textarea id="account_data"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4" style="text-align: right;">
                     <label for="account_id">Account ID</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
@@ -77,18 +85,17 @@
             $("#send").on("click", function () {
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
+                    accountData = $("#account_data").val(),
                     accountId = $("#account_id").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val());
-                if (!(secret && key && accountId)) {
+                if (!(secret && key && accountData && accountId)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var data = {
-                    'email': 'test@test.com'
-                };
-                var client = NextCallerPlatformClient(key, secret, sandbox);
-                client.updatePlatformAccount(data, accountId, function(response_obj, status_code) {
+                var client = NextCallerPlatformClient(key, secret, sandbox),
+                    parsedAccountData = JSON.parse(accountData);
+                client.updatePlatformAccount(parsedAccountData, accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));
