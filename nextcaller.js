@@ -133,10 +133,16 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
+    NextCallerPlatformClient.prototype.createPlatformAccount = function(data, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(data),
+            url = this.baseUrl + "accounts/" + serialize({"format": "json"});
+        makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
+    };
+
     NextCallerPlatformClient.prototype.updatePlatformAccount = function(data, accountId, successCallback, errorCallback) {
         var jsonData = JSON.stringify(data),
             url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
-        makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
+        makeCorsRequest("PUT", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
     NextCallerPlatformClient.prototype.getFraudLevel = function(phone, accountId, successCallback, errorCallback) {

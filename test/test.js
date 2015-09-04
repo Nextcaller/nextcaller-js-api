@@ -165,6 +165,29 @@ var before = window.before,
         "object": "account",
         "resource_uri": "/v2/accounts/test/"
     },
+    platformCreateAccountJsonRequestExample = {
+        "id": "test_username",
+        "first_name": "Clark",
+        "last_name": "Kent",
+        "email": "test@test.com"
+    },
+    platformCreateAccountWrongJsonRequestExample = {
+        "first_name": "Clark",
+        "last_name": "Kent",
+        "email": "test@test.com"
+    },
+    platformCreateAccountWrongResult = {
+        "error": {
+            "message": "Validation Error",
+            "code": "422",
+            "type": "Unprocessable Entity",
+            "description": {
+                "id": [
+                    "This field cannot be blank."
+                ]
+            }
+        }
+    },
     platformUpdateAccountJsonRequestExample = {
         "first_name": "Clark",
         "last_name": "Kent",
@@ -538,6 +561,57 @@ describe("platformClient get platform statistics by account", function () {
 
 });
 
+describe("platformClient create platform account with incorrect data", function () {
+
+    var xhr,
+        requests,
+        platformCreateAccountWrongResultStr = JSON.stringify(platformCreateAccountWrongResult);
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the 400 response", function (done) {
+        platformClient.createPlatformAccount(platformCreateAccountWrongJsonRequestExample, null, function (data, statusCode) {
+            statusCode.should.equal(400);
+            data.error.description.id[0].should.equal("This field cannot be blank.");
+            done();
+        });
+        requests[0].respond(400, {}, platformCreateAccountWrongResultStr);
+    });
+
+});
+
+describe("platformClient create platform account with correct data", function () {
+
+    var xhr, requests;
+
+    before(function () {
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (req) { requests.push(req); };
+    });
+
+    after(function () {
+        xhr.restore();
+    });
+
+    it("should return the 201 correct response", function (done) {
+        platformClient.createPlatformAccount(platformCreateAccountJsonRequestExample, function (data, statusCode) {
+            statusCode.should.equal(201);
+            data.should.equal("");
+            done();
+        });
+        requests[0].respond(201, {}, "");
+    });
+
+});
 
 describe("platformClient update platform account with incorrect data", function () {
 
