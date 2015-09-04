@@ -39,7 +39,7 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.getByAddressName = function(addressData, successCallback, errorCallback) {
+    NextCallerClient.prototype.getByNameAddress = function(addressData, successCallback, errorCallback) {
         addressData.format = "json";
         var url = this.baseUrl + "records/" + serialize(addressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
@@ -90,7 +90,7 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.getByAddressName = function(addressData, accountId, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.getByNameAddress = function(addressData, accountId, successCallback, errorCallback) {
         addressData.format = "json";
         var url = this.baseUrl + "records/" + serialize(addressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);

@@ -214,7 +214,7 @@ var before = window.before,
         "spoofed": "false",
         "fraud_risk": "low"
     },
-    wrongAddressResponseObj = {
+    wrongNameAddressResponseObj = {
         "error": {
             "message": "Validation Error",
             "code": "422",
@@ -226,12 +226,12 @@ var before = window.before,
             }
         }
     },
-    wrongAddressRequestObj = {
+    wrongNameAddressRequestObj = {
         "first_name": "Sharon",
         "last_name": "Ehni",
         "address": "7160 Sw Crestview Pl"
     },
-    correctAddressRequestObj = {
+    correctNameAddressRequestObj = {
         "first_name": "Sharon",
         "last_name": "Ehni",
         "address": "7160 Sw Crestview Pl",
@@ -293,7 +293,7 @@ describe("getByPhone with incorrect phone number", function () {
 });
 
 
-describe("getByAddressName with correct address data", function () {
+describe("getByNameAddress with correct name and address data", function () {
 
     var xhr, requests;
 
@@ -308,19 +308,19 @@ describe("getByAddressName with correct address data", function () {
     });
 
     it("should return the correct response", function (done) {
-        var addressResponseObjectStr = JSON.stringify(phoneResponseObject);
-        client.getByAddressName(correctAddressRequestObj, function (data, statusCode) {
+        var nameAddressResponseObjectStr = JSON.stringify(phoneResponseObject);
+        client.getByNameAddress(correctNameAddressRequestObj, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
             data.records[0].id.should.equal(profile_id);
             done();
         });
-        requests[0].respond(200, {}, addressResponseObjectStr);
+        requests[0].respond(200, {}, nameAddressResponseObjectStr);
     });
 });
 
 
-describe("getByAddressName with incorrect address data", function () {
+describe("getByNameAddress with incorrect name and address data", function () {
 
     var xhr, requests;
 
@@ -335,13 +335,13 @@ describe("getByAddressName with incorrect address data", function () {
     });
 
     it("should return 400 error", function (done) {
-        var addressResponseObjectStr = JSON.stringify(wrongAddressResponseObj);
-        client.getByAddressName(wrongAddressRequestObj, null, function (data, statusCode) {
+        var nameAddressResponseObjectStr = JSON.stringify(wrongNameAddressResponseObj);
+        client.getByNameAddress(wrongNameAddressRequestObj, null, function (data, statusCode) {
             statusCode.should.equal(400);
             data.error.code.should.equal("422");
             done();
         });
-        requests[0].respond(400, {}, addressResponseObjectStr);
+        requests[0].respond(400, {}, nameAddressResponseObjectStr);
     });
 });
 
@@ -691,7 +691,7 @@ describe("platformClient getFraudLevel with correct phone", function () {
     });
 });
 
-describe("platformClient getByAddressName with correct address data", function () {
+describe("platformClient getByNameAddress with correct name and address data", function () {
 
     var xhr, requests;
 
@@ -706,19 +706,19 @@ describe("platformClient getByAddressName with correct address data", function (
     });
 
     it("should return the correct response", function (done) {
-        var addressResponseObjectStr = JSON.stringify(phoneResponseObject);
-        platformClient.getByAddressName(correctAddressRequestObj, accountId, function (data, statusCode) {
+        var nameAddressResponseObjectStr = JSON.stringify(phoneResponseObject);
+        platformClient.getByNameAddress(correctNameAddressRequestObj, accountId, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
             data.records[0].id.should.equal(profile_id);
             done();
         });
-        requests[0].respond(200, {}, addressResponseObjectStr);
+        requests[0].respond(200, {}, nameAddressResponseObjectStr);
     });
 });
 
 
-describe("platformClient getByAddressName with incorrect address data", function () {
+describe("platformClient getByNameAddress with incorrect name and address data", function () {
 
     var xhr, requests;
 
@@ -733,12 +733,12 @@ describe("platformClient getByAddressName with incorrect address data", function
     });
 
     it("should return 400 error", function (done) {
-        var addressResponseObjectStr = JSON.stringify(wrongAddressResponseObj);
-        platformClient.getByAddressName(wrongAddressRequestObj, accountId, null, function (data, statusCode) {
+        var nameAddressResponseObjectStr = JSON.stringify(wrongNameAddressResponseObj);
+        platformClient.getByNameAddress(wrongNameAddressRequestObj, accountId, null, function (data, statusCode) {
             statusCode.should.equal(400);
             data.error.code.should.equal("422");
             done();
         });
-        requests[0].respond(400, {}, addressResponseObjectStr);
+        requests[0].respond(400, {}, nameAddressResponseObjectStr);
     });
 });
