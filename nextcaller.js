@@ -199,9 +199,9 @@
         
         xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
         if (accountId) {
-            xhr.setRequestHeader(defaultPlatformAccountHeader, accountId)
+            xhr.setRequestHeader(defaultPlatformAccountHeader, accountId);
         }
-        if (data && method === "POST") {
+        if (data && method !== "GET") {
             xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
         }
 
@@ -221,7 +221,7 @@
                 statusCode = xhr.status;
             errorHandler(text, statusCode, errorCallback);
         };
-        if (data && method === "POST") {
+        if (data && method !== "GET") {
             xhr.send(data);
         } else {
             xhr.send();
