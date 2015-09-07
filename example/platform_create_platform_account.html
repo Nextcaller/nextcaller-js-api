@@ -38,7 +38,7 @@
         </div>
         <div class="row">
             <div class="col-xs-4" style="text-align: right;">
-                <label for="secret">Api secret</label>
+                <label for="secret">API secret</label>
             </div>
             <div class="col-xs-8" style="text-align: left;">
                 <input type="text" id="secret">
@@ -86,7 +86,7 @@
             }
             var client = NextCallerPlatformClient(key, secret, sandbox),
                 parsedAccountData = JSON.parse(accountData);
-            client.updatePlatformAccount(parsedAccountData, function(response_obj, status_code) {
+            client.createPlatformAccount(parsedAccountData, function(response_obj, status_code) {
                 result.val(JSON.stringify(response_obj, null, 4));
             }, function (error_obj, status_code) {
                 result.val(JSON.stringify(error_obj, null, 4));
