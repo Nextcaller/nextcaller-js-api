@@ -38,9 +38,9 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.getByNameAddress = function(addressData, successCallback, errorCallback) {
-        addressData.format = "json";
-        var url = this.baseUrl + "records/" + serialize(addressData);
+    NextCallerClient.prototype.getByNameAddress = function(nameAddressData, successCallback, errorCallback) {
+        nameAddressData.format = "json";
+        var url = this.baseUrl + "records/" + serialize(nameAddressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
@@ -52,14 +52,14 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.getByProfileId = function(profile_id, successCallback, errorCallback) {
-        var url = this.baseUrl + "users/" + profile_id + "/" + serialize({"format": "json"});
+    NextCallerClient.prototype.getByProfileId = function(profileId, successCallback, errorCallback) {
+        var url = this.baseUrl + "users/" + profileId + "/" + serialize({"format": "json"});
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.updateByProfileId = function(profile_id, data, successCallback, errorCallback) {
+    NextCallerClient.prototype.updateByProfileId = function(profileId, data, successCallback, errorCallback) {
         var jsonData = JSON.stringify(data),
-            url = this.baseUrl + "users/" + profile_id + "/" + serialize({"format": "json"});
+            url = this.baseUrl + "users/" + profileId + "/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
@@ -88,9 +88,9 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.getByNameAddress = function(addressData, accountId, successCallback, errorCallback) {
-        addressData.format = "json";
-        var url = this.baseUrl + "records/" + serialize(addressData);
+    NextCallerPlatformClient.prototype.getByNameAddress = function(nameAddressData, accountId, successCallback, errorCallback) {
+        nameAddressData.format = "json";
+        var url = this.baseUrl + "records/" + serialize(nameAddressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
@@ -102,18 +102,18 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.getByProfileId = function(profile_id, accountId, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.getByProfileId = function(profileId, accountId, successCallback, errorCallback) {
         var params = {
             "format": "json"
-        }, url = this.baseUrl + "users/" + profile_id + "/" + serialize(params);
+        }, url = this.baseUrl + "users/" + profileId + "/" + serialize(params);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.updateByProfileId = function(profile_id, data, accountId, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.updateByProfileId = function(profileId, data, accountId, successCallback, errorCallback) {
         var jsonData = JSON.stringify(data),
             params = {
                 "format": "json"
-            }, url = this.baseUrl + "users/" + profile_id + "/" + serialize(params);
+            }, url = this.baseUrl + "users/" + profileId + "/" + serialize(params);
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData, accountId);
     };
 

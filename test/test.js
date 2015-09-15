@@ -11,8 +11,8 @@ var before = window.before,
     after = window.after,
     phone = 2125558383,
     wrongPhone = 212555838,
-    profile_id = "97d949a413f4ea8b85e9586e1f2d9a",
-    wrongProfileId = profile_id + "XXXXXXXXXXX",
+    profileId = "97d949a413f4ea8b85e9586e1f2d9a",
+    wrongProfileId = profileId + "XXXXXXXXXXX",
     email = "demo@nextcaller.com",
     wrongEmail = "demo@nextcaller@com",
     username = "XXXXXXXXXXXXX",
@@ -265,7 +265,7 @@ describe("getByPhone with correct phone number", function () {
         client.getByPhone(phone, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
-            data.records[0].id.should.equal(profile_id);
+            data.records[0].id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, phoneResponseObjectStr);
@@ -318,7 +318,7 @@ describe("getByNameAddress with correct name and address data", function () {
         client.getByNameAddress(correctNameAddressRequestObj, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
-            data.records[0].id.should.equal(profile_id);
+            data.records[0].id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, nameAddressResponseObjectStr);
@@ -368,10 +368,10 @@ describe("getByProfileId with correct profile id", function () {
 
     it("should return the correct response", function (done) {
         var profileResponseObject_str = JSON.stringify(profileResponseObject);
-        client.getByProfileId(profile_id, function (data, statusCode) {
+        client.getByProfileId(profileId, function (data, statusCode) {
             statusCode.should.equal(200);
             data.phone[0].number.should.equal(phone.toString());
-            data.id.should.equal(profile_id);
+            data.id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, profileResponseObject_str);
@@ -423,7 +423,7 @@ describe("getByEmail with correct email", function () {
         client.getByEmail(email, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].email.should.equal(email);
-            data.records[0].id.should.equal(profile_id);
+            data.records[0].id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, emailResponseObjectStr);
@@ -498,7 +498,7 @@ describe("updateProfile with correct profile id", function () {
     });
 
     it("should return the correct response", function (done) {
-        client.updateByProfileId(profile_id, profileRequestObject, function (data, statusCode) {
+        client.updateByProfileId(profileId, profileRequestObject, function (data, statusCode) {
             statusCode.should.equal(204);
             data.should.equal("");
             done();
@@ -555,7 +555,7 @@ describe("updateProfile with incorrect email", function () {
                 "email": "Bad Request: Invalid email address"
             }
         };
-        client.updateByProfileId(profile_id, updateProfilerequestobject, null, function (error, statusCode) {
+        client.updateByProfileId(profileId, updateProfilerequestobject, null, function (error, statusCode) {
             statusCode.should.equal(400);
             error.users.email.should.equal(updateProfileResponse.users.email);
             done();
@@ -769,7 +769,7 @@ describe("platformClient getByNameAddress with correct name and address data", f
         platformClient.getByNameAddress(correctNameAddressRequestObj, accountId, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].phone[0].number.should.equal(phone.toString());
-            data.records[0].id.should.equal(profile_id);
+            data.records[0].id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, nameAddressResponseObjectStr);
@@ -822,7 +822,7 @@ describe("platformClient getByEmail with correct email", function () {
         platformClient.getByEmail(email, accountId, function (data, statusCode) {
             statusCode.should.equal(200);
             data.records[0].email.should.equal(email);
-            data.records[0].id.should.equal(profile_id);
+            data.records[0].id.should.equal(profileId);
             done();
         });
         requests[0].respond(200, {}, emailResponseObjectStr);

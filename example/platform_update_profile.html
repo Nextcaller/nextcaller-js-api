@@ -85,7 +85,7 @@
             $("#send").on("click", function () {
                 var secret = $("#secret").val(),
                     key = $("#key").val(),
-                    profile_id = $("#profile_id").val(),
+                    profileId = $("#profile_id").val(),
                     accountId = $("#account_id").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val());
@@ -97,7 +97,7 @@
                     "email": "test@test.com"
                 };
                 var client = NextCallerPlatformClient(key, secret, sandbox);
-                client.updateByProfileId(profile_id, data, accountId, function(response_obj, status_code) {
+                client.updateByProfileId(profileId, data, accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));
