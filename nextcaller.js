@@ -57,8 +57,8 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.updateByProfileId = function(profileId, data, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
+    NextCallerClient.prototype.updateByProfileId = function(profileId, profileData, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(profileData),
             url = this.baseUrl + "users/" + profileId + "/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
@@ -109,8 +109,8 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.updateByProfileId = function(profileId, data, accountId, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
+    NextCallerPlatformClient.prototype.updateByProfileId = function(profileId, profileData, accountId, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(profileData),
             params = {
                 "format": "json"
             }, url = this.baseUrl + "users/" + profileId + "/" + serialize(params);
@@ -131,14 +131,14 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerPlatformClient.prototype.createPlatformAccount = function(data, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
+    NextCallerPlatformClient.prototype.createPlatformAccount = function(accountData, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(accountData),
             url = this.baseUrl + "accounts/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
-    NextCallerPlatformClient.prototype.updatePlatformAccount = function(data, accountId, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
+    NextCallerPlatformClient.prototype.updatePlatformAccount = function(accountData, accountId, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(accountData),
             url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
         makeCorsRequest("PUT", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
