@@ -17,16 +17,20 @@ Requirements
 Installation
 ------------
 
-see example/cors\_phone\_example.html
-
+See example/cors\_phone\_example.html
     
     <script data-main="PATH_TO/nextcaller" src="PATH_TO/lib/require.js"></script>
 
 or
 
-
     <script src="PATH_TO/nextcaller.js"></script>
 
+Testing
+-------
+
+Execute following commands, if you want to run unit tests for the library:
+
+    npm install && npm test
 
 Documentation
 --------------

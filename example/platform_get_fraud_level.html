@@ -38,7 +38,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="secret">Api secret</label>
+                    <label for="secret">API secret</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
                     <input type="text" id="secret">
@@ -57,21 +57,10 @@
             </div>
             <div class="row">
                 <div class="col-xs-4" style="text-align: right;">
-                    <label for="platformUsername">Platform username</label>
+                    <label for="account_id">Account ID</label>
                 </div>
                 <div class="col-xs-8" style="text-align: left;">
-                    <input type="text" id="platformUsername">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4" style="text-align: right;">
-                    <label for="version">API version</label>
-                </div>
-                <div class="col-xs-8" style="text-align: left;">
-                    <select id="version">
-                        <option value="v2" selected="true">v2</option>
-                        <option value="v3">v3</option>
-                    </select>
+                    <input type="text" id="account_id">
                 </div>
             </div>
             <div class="row">
@@ -99,14 +88,13 @@
                     phone = $("#phone").val(),
                     result = $("#result"),
                     sandbox = !!parseInt($("#sandbox").val()),
-                    version = $("#version").val(),
-                    platformUsername = $("#platformUsername").val();
+                    accountId = $("#account_id").val();
                 if (!(secret && key && phone)) {
                     result.val("Please fill all fieds");
                     return false;
                 }
-                var client = NextCallerPlatformClient(key, secret, sandbox, version);
-                client.getFraudLevel(phone, platformUsername, function(response_obj, status_code) {
+                var client = NextCallerPlatformClient(key, secret, sandbox);
+                client.getFraudLevel(phone, accountId, function(response_obj, status_code) {
                     result.val(JSON.stringify(response_obj, null, 4));
                 }, function (error_obj, status_code) {
                     result.val(JSON.stringify(error_obj, null, 4));

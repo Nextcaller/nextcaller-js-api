@@ -8,7 +8,8 @@
 
     var baseUrl = "https://api.nextcaller.com/",
         sandboxBaseUrl = "https://api.sandbox.nextcaller.com/",
-        defaultApiVersion = "v2";
+        defaultApiVersion = "v2.1",
+        defaultPlatformAccountHeader = "Nc-Account-Id";
 
     function serialize(obj) {
         var vals = [];
@@ -20,14 +21,13 @@
         return "?" + vals.join("&");
     }
 
-    function NextCallerClient(username, password, sandbox, version) {
+    function NextCallerClient(username, password, sandbox) {
         if (!(this instanceof NextCallerClient)) {
-            return new NextCallerClient(username, password, sandbox, version);
+            return new NextCallerClient(username, password, sandbox);
         }
         this.username = username;
         this.password = password;
-        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + 
-            (version || defaultApiVersion) + "/";
+        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + defaultApiVersion + "/";
     }
 
     NextCallerClient.prototype.getByPhone = function(phone, successCallback, errorCallback) {
@@ -38,20 +38,28 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.getByAddressName = function(addressData, successCallback, errorCallback) {
-        addressData.format = "json";
-        var url = this.baseUrl + "records/" + serialize(addressData);
+    NextCallerClient.prototype.getByNameAddress = function(nameAddressData, successCallback, errorCallback) {
+        nameAddressData.format = "json";
+        var url = this.baseUrl + "records/" + serialize(nameAddressData);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.getByProfileId = function(profile_id, successCallback, errorCallback) {
-        var url = this.baseUrl + "users/" + profile_id + "/" + serialize({"format": "json"});
+    NextCallerClient.prototype.getByEmail = function(email, successCallback, errorCallback) {
+        var params = {
+            "email": email,
+            "format": "json"
+        }, url = this.baseUrl + "records/" + serialize(params);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerClient.prototype.updateByProfileId = function(profile_id, data, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
-            url = this.baseUrl + "users/" + profile_id + "/" + serialize({"format": "json"});
+    NextCallerClient.prototype.getByProfileId = function(profileId, successCallback, errorCallback) {
+        var url = this.baseUrl + "users/" + profileId + "/" + serialize({"format": "json"});
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+    };
+
+    NextCallerClient.prototype.updateByProfileId = function(profileId, profileData, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(profileData),
+            url = this.baseUrl + "users/" + profileId + "/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
@@ -63,47 +71,50 @@
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    function NextCallerPlatformClient(username, password, sandbox, version) {
+    function NextCallerPlatformClient(username, password, sandbox) {
         if (!(this instanceof NextCallerPlatformClient)) {
-            return new NextCallerPlatformClient(username, password, sandbox, version);
+            return new NextCallerPlatformClient(username, password, sandbox);
         }
         this.username = username;
         this.password = password;
-        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + 
-            (version || defaultApiVersion) + "/";
+        this.baseUrl = (!!sandbox ?  sandboxBaseUrl : baseUrl) + defaultApiVersion + "/";
     }
 
-    NextCallerPlatformClient.prototype.getByPhone = function(phone, platformUsername, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.getByPhone = function(phone, accountId, successCallback, errorCallback) {
         var params = {
             "format": "json",
-            "phone": phone,
-            "platform_username": platformUsername    
-        }, url = this.baseUrl + "records/" + serialize(params);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+            "phone": phone
+        },url = this.baseUrl + "records/" + serialize(params);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.getByAddressName = function(addressData, platformUsername, successCallback, errorCallback) {
-        addressData.format = "json";
-        addressData.platform_username = platformUsername;
-        var url = this.baseUrl + "records/" + serialize(addressData);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+    NextCallerPlatformClient.prototype.getByNameAddress = function(nameAddressData, accountId, successCallback, errorCallback) {
+        nameAddressData.format = "json";
+        var url = this.baseUrl + "records/" + serialize(nameAddressData);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.getByProfileId = function(profile_id, platformUsername, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.getByEmail = function(email, accountId, successCallback, errorCallback) {
         var params = {
-            "format": "json",
-            "platform_username": platformUsername    
-        }, url = this.baseUrl + "users/" + profile_id + "/" + serialize(params);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+            "email": email,
+            "format": "json"
+        },url = this.baseUrl + "records/" + serialize(params);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
-    NextCallerPlatformClient.prototype.updateByProfileId = function(profile_id, data, platformUsername, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
+    NextCallerPlatformClient.prototype.getByProfileId = function(profileId, accountId, successCallback, errorCallback) {
+        var params = {
+            "format": "json"
+        }, url = this.baseUrl + "users/" + profileId + "/" + serialize(params);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
+    };
+
+    NextCallerPlatformClient.prototype.updateByProfileId = function(profileId, profileData, accountId, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(profileData),
             params = {
-                "format": "json",
-                "platform_username": platformUsername    
-            }, url = this.baseUrl + "users/" + profile_id + "/" + serialize(params);
-        makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
+                "format": "json"
+            }, url = this.baseUrl + "users/" + profileId + "/" + serialize(params);
+        makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData, accountId);
     };
 
     NextCallerPlatformClient.prototype.getPlatformStatistics = function(page, successCallback, errorCallback) {
@@ -111,28 +122,33 @@
         var params = {
             "format": "json",
             "page": page
-        }, url = this.baseUrl + "platform_users/" + serialize(params);
+        }, url = this.baseUrl + "accounts/" + serialize(params);
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerPlatformClient.prototype.getPlatformUser = function(platformUsername, successCallback, errorCallback) {
-        var url = this.baseUrl + "platform_users/" + platformUsername + "/" + serialize({"format": "json"});
+    NextCallerPlatformClient.prototype.getPlatformAccount = function(accountId, successCallback, errorCallback) {
+        var url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
         makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
     };
 
-    NextCallerPlatformClient.prototype.updatePlatformUser = function(platformUsername, data, successCallback, errorCallback) {
-        var jsonData = JSON.stringify(data),
-            url = this.baseUrl + "platform_users/" + platformUsername + "/" + serialize({"format": "json"});
+    NextCallerPlatformClient.prototype.createPlatformAccount = function(accountData, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(accountData),
+            url = this.baseUrl + "accounts/" + serialize({"format": "json"});
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
-    NextCallerPlatformClient.prototype.getFraudLevel = function(phone, platformUsername, successCallback, errorCallback) {
+    NextCallerPlatformClient.prototype.updatePlatformAccount = function(accountData, accountId, successCallback, errorCallback) {
+        var jsonData = JSON.stringify(accountData),
+            url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
+        makeCorsRequest("PUT", url, this.username, this.password, successCallback, errorCallback, jsonData);
+    };
+
+    NextCallerPlatformClient.prototype.getFraudLevel = function(phone, accountId, successCallback, errorCallback) {
         var params = {
             "format": "json",
-            "phone": phone,
-            "platform_username": platformUsername    
+            "phone": phone
         }, url = this.baseUrl + "fraud/" + serialize(params);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
+        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
     var errorHandler = function (err, statusCode, errorCallback) {
@@ -173,7 +189,7 @@
     }
 
     // Make the actual CORS request.
-    function makeCorsRequest(method, url, username, password, successCallback, errorCallback, data) {
+    function makeCorsRequest(method, url, username, password, successCallback, errorCallback, data, accountId) {
         // All HTML5 Rocks properties support CORS.
         method = method.toUpperCase();
         var xhr = createCORSRequest(method, url);
@@ -182,10 +198,13 @@
         }
         
         xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-        
-        if (data && method === "POST") {
+        if (accountId) {
+            xhr.setRequestHeader(defaultPlatformAccountHeader, accountId);
+        }
+        if (data && method !== "GET") {
             xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
         }
+
         // Response handlers.
         xhr.onload = function() {
             var text = xhr.responseText,
@@ -202,7 +221,7 @@
                 statusCode = xhr.status;
             errorHandler(text, statusCode, errorCallback);
         };
-        if (data && method === "POST") {
+        if (data && method !== "GET") {
             xhr.send(data);
         } else {
             xhr.send();

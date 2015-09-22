@@ -1,6 +1,6 @@
 {
     "name": "nextcaller-js-api",
-    "version": "0.0.1",
+    "version": "0.2.0",
     "description": "A JS wrapper around the Nextcaller API",
     "main": "nextcaller.js",
     "author": "Ihar Niamilentsau <trezorg@gmail.com>",
