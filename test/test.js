@@ -28,8 +28,6 @@ var before = window.before,
                 "last_name": "Seinfeld",
                 "name": "Jerry Seinfeld",
                 "language": "English",
-                "fraud_threat": "low",
-                "spoof": "false",
                 "phone": [
                     {
                         "number": "2125558383"
@@ -69,8 +67,6 @@ var before = window.before,
         "last_name": "Seinfeld",
         "name": "Jerry Seinfeld",
         "language": "English",
-        "fraud_threat": "low",
-        "spoof": "false",
         "phone": [
             {
                 "number": "2125558383"
@@ -215,10 +211,6 @@ var before = window.before,
                 ]
             }
         }
-    },
-    fraudGetLevelResult = {
-        "spoofed": "false",
-        "fraud_risk": "low"
     },
     wrongNameAddressResponseObj = {
         "error": {
@@ -456,32 +448,6 @@ describe("getByEmail with incorrect email", function () {
     });
 });
 
-
-describe("getFraudLevel with correct phone", function () {
-
-    var xhr, requests;
-
-    before(function () {
-        xhr = sinon.useFakeXMLHttpRequest();
-        requests = [];
-        xhr.onCreate = function (req) { requests.push(req); };
-    });
-
-    after(function () {
-        xhr.restore();
-    });
-
-    it("should return the correct response", function (done) {
-        var fraudResponseObjectStr = JSON.stringify(fraudGetLevelResult);
-        client.getFraudLevel(phone, function (data, statusCode) {
-            statusCode.should.equal(200);
-            data.spoofed.should.equal("false");
-            data.fraud_risk.should.equal("low");
-            done();
-        });
-        requests[0].respond(200, {}, fraudResponseObjectStr);
-    });
-});
 
 describe("updateProfile with correct profile id", function () {
 
@@ -724,31 +690,6 @@ describe("platformClient update platform account with correct data", function ()
 
 });
 
-describe("platformClient getFraudLevel with correct phone", function () {
-
-    var xhr, requests;
-
-    before(function () {
-        xhr = sinon.useFakeXMLHttpRequest();
-        requests = [];
-        xhr.onCreate = function (req) { requests.push(req); };
-    });
-
-    after(function () {
-        xhr.restore();
-    });
-
-    it("should return the correct response", function (done) {
-        var fraudResponseObjectStr = JSON.stringify(fraudGetLevelResult);
-        platformClient.getFraudLevel(phone, accountId, function (data, statusCode) {
-            statusCode.should.equal(200);
-            data.spoofed.should.equal("false");
-            data.fraud_risk.should.equal("low");
-            done();
-        });
-        requests[0].respond(200, {}, fraudResponseObjectStr);
-    });
-});
 
 describe("platformClient getByNameAddress with correct name and address data", function () {
 

@@ -63,14 +63,6 @@
         makeCorsRequest("POST", url, this.username, this.password, successCallback, errorCallback, jsonData);
     };
 
-    NextCallerClient.prototype.getFraudLevel = function(phone, successCallback, errorCallback) {
-        var params = {
-            "format": "json",
-            "phone": phone    
-        }, url = this.baseUrl + "fraud/" + serialize(params);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback);
-    };
-
     function NextCallerPlatformClient(username, password, sandbox) {
         if (!(this instanceof NextCallerPlatformClient)) {
             return new NextCallerPlatformClient(username, password, sandbox);
@@ -141,14 +133,6 @@
         var jsonData = JSON.stringify(accountData),
             url = this.baseUrl + "accounts/" + accountId + "/" + serialize({"format": "json"});
         makeCorsRequest("PUT", url, this.username, this.password, successCallback, errorCallback, jsonData);
-    };
-
-    NextCallerPlatformClient.prototype.getFraudLevel = function(phone, accountId, successCallback, errorCallback) {
-        var params = {
-            "format": "json",
-            "phone": phone
-        }, url = this.baseUrl + "fraud/" + serialize(params);
-        makeCorsRequest("GET", url, this.username, this.password, successCallback, errorCallback, null, accountId);
     };
 
     var errorHandler = function (err, statusCode, errorCallback) {
